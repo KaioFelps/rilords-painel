@@ -1,3 +1,4 @@
+import "./global.css"
 import Header from "@/components/Header"
 import "tailwindcss/tailwind.css"
 import { Poppins } from "@next/font/google"

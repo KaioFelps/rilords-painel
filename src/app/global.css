@@ -1,0 +1,27 @@
+@keyframes SlideIn {
+    from {
+        right: -100%;
+    }
+    to {
+        right: 0%;
+    }
+}
+
+@keyframes SlideOut {
+    from {
+        right: 0%;
+    }
+    to {
+        right: -100%;
+    }
+}
+
+.rs-anim-slide-in {
+    animation: 250ms ease-in SlideIn;
+    animation-fill-mode: both;
+}
+
+.rs-anim-slide-out {
+    animation: 250ms ease-in SlideOut;
+    animation-fill-mode: both;
+}
