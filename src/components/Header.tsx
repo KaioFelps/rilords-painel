@@ -9,13 +9,23 @@ import { ArrowSquareOut, List, X } from "phosphor-react";
 export default function Header() {
     const [ isDrawerOpened, setIsDrawerOpened ] = useState(false)
 
+    function handleOpenDrawer() {
+        setIsDrawerOpened(true)
+        document.querySelector("body")!.classList.add("over")
+    }
+
+    function handleCloseDrawer() {
+        setIsDrawerOpened(false)
+        document.querySelector("body")!.classList.remove("hidden")
+    }
+
     return (
         <>
             <header className="w-full flex items-center justify-between px-6 py-3">
                 <h1
                 className="text-2xl text-secondary font-bold uppercase"
                 >
-                    Rilords::admin
+                    Rilords 
                 </h1>
 
                 <div className="flex items-center gap-4">
@@ -26,17 +36,15 @@ export default function Header() {
                     </nav>
 
                     <div className="flex flex-row gap-1">
-                        <Button variant="primary" size="sm" asChild>
-                        <Link href="/">Ir ao site <ArrowSquareOut size={24} weight="bold" /></Link>
+                        <Button className="max-md:hidden" variant="primary" size="sm" asChild>
+                            <Link href="/">Ir ao site <ArrowSquareOut size={24} weight="bold" /></Link>
                         </Button>
 
                         <Button
                             className="md:hidden"
                             size="sm"
                             variant="ghost"
-                            onClick={() => {
-                                setIsDrawerOpened(true)
-                            }}
+                            onClick={handleOpenDrawer}
                         >
                             <List size={24} weight="bold" />
                         </Button>
@@ -49,7 +57,7 @@ export default function Header() {
                 keyboard
                 placement="right"
                 open={isDrawerOpened}
-                onClose={() => setIsDrawerOpened(false)}
+                onClose={handleCloseDrawer}
                 className="
                 fixed right-0 top-0 w-full h-screen bg-gray-100
                 "
@@ -59,7 +67,7 @@ export default function Header() {
                     <Button
                         variant="danger"
                         size="sm"
-                        onClick={() => setIsDrawerOpened(false)}
+                        onClick={handleCloseDrawer}
                     >
                         <X size={24} weight="bold" />
                     </Button>
@@ -69,6 +77,9 @@ export default function Header() {
                     <Link className="py-3 px-6 rounded-full bg-primary/10 hover:bg-primary/25 hover:ring hover:ring-inset hover:ring-primary/25 active:bg-primary/40 text-lg font-medium transition-all delay-75" href="/">Início</Link>
                     <Link className="py-3 px-6 rounded-full bg-primary/10 hover:bg-primary/25 hover:ring hover:ring-inset hover:ring-primary/25 active:bg-primary/40 text-lg font-medium transition-all delay-75" href="/">Início</Link>
                 </nav>
+                <Button className="w-[calc(100%_-_40px)] mx-auto" variant="primary" size="sm" asChild>
+                    <Link href="/">Ir ao site <ArrowSquareOut size={24} weight="bold" /></Link>
+                </Button>
             </Drawer>
         </>
     )

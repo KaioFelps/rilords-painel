@@ -26,7 +26,7 @@ export default function Button({wFull, children, size = "md", variant = "primary
 
     return (
         <Component
-            className={clsx(`${className && className} relative select-none overflow-hidden ripple-button flex items-center justify-center gap-2 rounded-lg font-medium text-base focus:outline-none`, 
+            className={clsx(`${className && className} relative select-none overflow-hidden ripple-button flex items-center text-center justify-center gap-2 rounded-lg font-medium text-base focus:outline-none`, 
             wFull && "w-full",
             hFull && "h-full",
             variant === "primary" && "bg-primary text-white ring-1 ring-inset ring-black/10 hover:brightness-95 active:brightness-90 shadow-md",
