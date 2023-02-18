@@ -1,6 +1,7 @@
 import Header from "@/components/Header"
 import "tailwindcss/tailwind.css"
 import { Poppins } from "@next/font/google"
+import Footer from "@/components/Footer"
 
 const poppins = Poppins({
   weight: ["400", "500", "700"],
@@ -26,6 +27,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   )
