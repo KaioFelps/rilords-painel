@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          Int    @id @default(autoincrement())
+  title       String @unique
+  description String
+  image       String
+  tags        String
+
+  @@map("project")
+}
+
+model PinHash {
+  hash        String @id @unique
+  
+  @@map("pinHash")
+}

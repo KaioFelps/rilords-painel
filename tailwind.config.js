@@ -9,6 +9,7 @@ module.exports = {
       fontFamily: {
         primary: ["var(--poppins-next-font)"],
         sans: ["var(--poppins-next-font)"],
+        mono: ["var(--roboto-mono-next-font)"],
       },
       colors: {
         "white": "#fff",
@@ -22,6 +23,7 @@ module.exports = {
         "gray-200": "#F2F0F8",
         "gray-300": "#EEEEEE",
         "gray-400": "#B2B4BE",
+        "gray-600": "DEDEE3",
         "gray-500": "#6F7589",
         "gray-700": "#4C5061",
       },
