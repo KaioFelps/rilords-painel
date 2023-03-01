@@ -43,8 +43,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.status(204).end();
   }
   
-  catch (error) {
-    console.log(error);
+  catch (e) {
+    console.log(e);
     res.status(500).end();
   }
 }
