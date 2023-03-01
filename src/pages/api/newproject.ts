@@ -14,14 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const isAuthenticated = await authenticate(token);
 
-    if (!token || !isAuthenticated) {
-      throw new Error("Not allowed.");
-      return;
-    }
-    if (!req.body) {
-      throw new Error("Bad request: body not found.");
-      return;
-    }
+    if (!token || !isAuthenticated) return res.status(405).end()
+    if (!req.body) return res.status(400).end()
 
     const createNewProject = z.object({
       title: z.string(),
@@ -47,8 +41,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     });
 
     res.status(204).end();
-  } catch (error) {
+  }
+  
+  catch (error) {
     console.log(error);
-    res.status(400).end();
+    res.status(500).end();
   }
 }
