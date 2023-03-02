@@ -8,6 +8,9 @@ type Data = {
   name: string
 }
 
+
+// fs - aea - projetos - habblet - iron
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   try {
     const { token } = req.headers as { token: string };

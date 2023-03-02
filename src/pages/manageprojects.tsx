@@ -5,21 +5,6 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "phosphor-react";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    const response = await api.get("projects", {
-        headers: {
-            token: process.env.API_TOKEN
-        },
-    });
-
-    const projects = await response.data
-
-    return {
-        props: {
-            projects
-        }
-    }
-}
 
 type projectPropsType = {
     id: number;
@@ -29,9 +14,37 @@ type projectPropsType = {
     image: string;
 }
 
-export default function ManageProjects({projects}: {projects: projectPropsType[]}) {
-    // const currentPage = 1;
-    
+type ManageProjectsPropsType = {
+    currentPage: number;
+    perPage: number;
+    totalPages: number;
+    totalProjectsLength: number;
+    responseLength: number;
+    projects: projectPropsType[];
+}
+
+export const getServerSideProps: GetServerSideProps = async () => {
+    const response = await api.get("projects", {
+        headers: {
+            token: process.env.API_TOKEN
+        },
+    });
+
+    const { currentPage, perPage, responseLength, data, totalProjectsLength, totalPages } = await response.data
+
+    return {
+        props: {
+            currentPage,
+            perPage,
+            totalPages,
+            responseLength,
+            projects: data,
+            totalProjectsLength,
+        } as ManageProjectsPropsType
+    }
+}
+
+export default function ManageProjects({ projects, currentPage, perPage, responseLength, totalProjectsLength, totalPages }: ManageProjectsPropsType) {
     return (
         <main className="w-[calc(100%_-_40px)] mx-auto max-w-4xl">
             <header className="my-12">
@@ -62,15 +75,19 @@ export default function ManageProjects({projects}: {projects: projectPropsType[]
                 </button>
 
                 <div className="flex flex-row">
-                    {/* <Link href="/"
-                        className={clsx("relative text-lg py-[6px] px-[17px]", currentPage === 1 && "before:w-full before:bg-primary before:h-[2px] before:absolute before:-top-[2px] before:right-0")}
-                    >1</Link> */}
-                    {/* <Link href="/" className={clsx("relative text-lg py-[6px] px-[17px]", currentPage === 2 && "before:w-full before:bg-primary before:h-[2px] before:absolute before:-top-[2px] before:right-0")}>2</Link>
-                    <Link href="/" className={clsx("relative text-lg py-[6px] px-[17px]", currentPage === 3 && "before:w-full before:bg-primary before:h-[2px] before:absolute before:-top-[2px] before:right-0")}>3</Link>
-                    <span className={clsx("relative text-lg py-[6px] px-[17px]")}>...</span>
-                    <Link href="/" className={clsx("relative text-lg py-[6px] px-[17px]", currentPage === 4 && "before:w-full before:bg-primary before:h-[2px] before:absolute before:-top-[2px] before:right-0")}>4</Link>
-                    <Link href="/" className={clsx("relative text-lg py-[6px] px-[17px]", currentPage === 5 && "before:w-full before:bg-primary before:h-[2px] before:absolute before:-top-[2px] before:right-0")}>5</Link>
-                    <Link href="/" className={clsx("relative text-lg py-[6px] px-[17px]", currentPage === 6 && "before:w-full before:bg-primary before:h-[2px] before:absolute before:-top-[2px] before:right-0")}>6</Link> */}
+
+                    {[0, 1].map((page: number) => {
+                        return (
+                            <Link href="#"
+                                key={page + 1}
+                                className={clsx("relative text-lg py-[6px] px-[17px]", currentPage === page + 1 && "before:w-full before:bg-primary before:h-[2px] before:absolute before:-top-[2px] before:right-0")}
+                            >
+                                {page + 1}
+                            </Link>
+                        )
+                    })}
+                    
+                    {/* <span className={clsx("relative text-lg py-[6px] px-[17px]")}>...</span> */}
                 </div>
                 
                 <button className="flex flex-row gap-6 items-center text-sm font-medium text-gray-700">

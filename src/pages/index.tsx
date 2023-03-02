@@ -27,7 +27,7 @@ export default function Home() {
 
         <div className="flex flex-row gap-3 h-[120px] max-[640px]:flex-col">
           <Button variant="ghost" size="lg" wFull hFull asChild>
-            <Link href="/">
+            <Link href="/manageprojects">
               Gerenciar jogos
             </Link>
           </Button>

@@ -85,12 +85,27 @@ export default function Form() {
                     bg-gray-100 border border-gray-400 rounded-xl p-3
                     flex flex-col gap-2
                 ">
-                    {["Fã-sites", "AeA", "Projetos", "Habblet", "Iron Hotel"].map((label, index) => {
+                    {["fs", "aea", "projetos", "habblet", "iron"].map((label: string, index: number) => {
+                        // fs - aea - projetos - habblet - iron
+
+                        const values = {
+                            "fs": "Fa-sites",
+                            "aea": "AeA",
+                            "projetos": "Projetos",
+                            "habblet": "Habblet",
+                            "iron": "Iron Hotel",
+                        } as {
+                            [key: string]: string;
+                        }
+
+                        console
+                                                 
                         return (
                             <label key={index} className="text-base font-medium text-gray-800 flex flex-row gap-2 items-center">
                                 <Checkbox.Root
                                     value={label}
                                     onCheckedChange={() => handleToggleCheckbox(label as labelString)}
+                                    title={`Checkbox para ${values[label]}`}
                                     className={
                                         clsx(`
                                         bg-white w-8 h-8 rounded-lg ring-0 shadow-primary/25 flex items-center justify-center outline-none outline-transparent transition-all delay-75
@@ -105,7 +120,7 @@ export default function Form() {
                                     </Checkbox.Indicator>
                                 </Checkbox.Root>
 
-                                {label}
+                                {values[label]}
                             </label>
                         )
                     })}

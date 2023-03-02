@@ -18,7 +18,7 @@ export default function ProjectCard({ image, projectId, projectName, tags }: Pro
                     <h2 className="text-base text-primary">
                         {projectName}
                     </h2>
-                    <div>
+                    <div className="flex flex-row gap-1">
                         {tags.map(tag => {
                             return (
                                 <Tag
@@ -35,7 +35,7 @@ export default function ProjectCard({ image, projectId, projectName, tags }: Pro
 
             <div className="flex flex-row gap-1">
                 <Button variant="simple" size="xs">Editar</Button>
-                <Button variant="simple" size="xs">Apagar</Button>
+                <Button variant="simple" size="xs" className="text-danger outline-danger/40">Apagar</Button>
             </div>
         </article>
     )
