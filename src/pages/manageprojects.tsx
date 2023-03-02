@@ -1,8 +1,7 @@
 import ProjectCard from "@/components/ProjectCard";
+import ProjectsPagination from "@/components/projectsPagination";
 import { api } from "@/lib/axios";
-import clsx from "clsx";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "phosphor-react";
 
 
@@ -23,11 +22,16 @@ type ManageProjectsPropsType = {
     projects: projectPropsType[];
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps<any, {query?: string;}> = async ({query}) => {
+    const { page } = query
+    
     const response = await api.get("projects", {
         headers: {
             token: process.env.API_TOKEN
         },
+        params: {
+            page: page || null
+        }
     });
 
     const { currentPage, perPage, responseLength, data, totalProjectsLength, totalPages } = await response.data
@@ -69,31 +73,10 @@ export default function ManageProjects({ projects, currentPage, perPage, respons
             </section>
 
             <section className="flex flex-row justify-between items-center border-t border-gray-300 mb-24">
-                <button className="flex flex-row gap-6 items-center text-sm font-medium text-gray-700">
-                    <ArrowLeft size={16} weight="bold" />
-                    Página anterior
-                </button>
-
-                <div className="flex flex-row">
-
-                    {[0, 1].map((page: number) => {
-                        return (
-                            <Link href="#"
-                                key={page + 1}
-                                className={clsx("relative text-lg py-[6px] px-[17px]", currentPage === page + 1 && "before:w-full before:bg-primary before:h-[2px] before:absolute before:-top-[2px] before:right-0")}
-                            >
-                                {page + 1}
-                            </Link>
-                        )
-                    })}
-                    
-                    {/* <span className={clsx("relative text-lg py-[6px] px-[17px]")}>...</span> */}
-                </div>
-                
-                <button className="flex flex-row gap-6 items-center text-sm font-medium text-gray-700">
-                    Página posterior
-                    <ArrowRight size={16} weight="bold" />
-                </button>
+                <ProjectsPagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                />
             </section>
         </main>
     )

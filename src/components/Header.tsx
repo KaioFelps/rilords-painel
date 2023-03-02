@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Drawer from "rsuite/Drawer"
-import Button from "./Button";
+import Button from "../ui/Button";
 import { useState } from "react"
 import { ArrowSquareOut, List, X } from "phosphor-react";
 

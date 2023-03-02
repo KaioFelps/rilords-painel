@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Tag from "rsuite/Tag";
-import Button from "./Button";
+import Button from "../ui/Button";
 
 type ProjectCardPropsType = {
     image: string;

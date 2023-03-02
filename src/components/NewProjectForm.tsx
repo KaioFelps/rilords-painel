@@ -4,7 +4,7 @@ import { BookmarksSimple, Check, FileText, ImageSquare, UploadSimple } from "pho
 import { FormEvent, useState } from "react"
 import * as Checkbox from "@radix-ui/react-checkbox"
 import clsx from "clsx"
-import Button from "./Button"
+import Button from "../ui/Button"
 
 type labelString = "Fã-sites" | "AeA" | "Projetos" | "Habblet" | "Iron Hotel"
 type checkedLabelsArray = Array<labelString>

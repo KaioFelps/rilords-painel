@@ -1,5 +1,5 @@
-import Box from "@/components/Box";
-import Button from "@/components/Button";
+import Box from "@/ui/Box";
+import Button from "@/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
 import TullaLuanaPensando from "../assets/tulla-luana.png"
