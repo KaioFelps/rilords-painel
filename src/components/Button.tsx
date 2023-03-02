@@ -17,18 +17,20 @@ type ButtonPropsType = {
     size?: "xs" | "sm" | "md" | "lg";
     wFull?: boolean;
     hFull?: boolean;
+    clearWidth?: boolean;
     height?: number | "full";
     children: ReactNode
 } & ButtonHTMLAttributes<unknown> & (AsButton | AsSlot)
 
-export default function Button({wFull, children, size = "md", variant = "primary", asChild = false, hFull, className, ...rest}: ButtonPropsType) {
+export default function Button({wFull, hFull, clearWidth = false, children, size = "md", variant = "primary", asChild = false, className, ...rest}: ButtonPropsType) {
     const Component = asChild ? Slot : "button"
 
     return (
         <Component
-            className={clsx(`${className && className} relative select-none overflow-hidden flex items-center text-center justify-center gap-2 rounded-lg font-medium text-base w-fit focus:outline focus:outline-4 transition-all delay-75`, 
+            className={clsx(`${className && className} relative select-none overflow-hidden flex items-center text-center justify-center gap-2 rounded-lg font-medium text-base focus:outline focus:outline-4 transition-all delay-75`, 
             wFull === true && "w-full",
             hFull === true && "h-auto",
+            clearWidth !== true && "w-fit",
             variant === "primary" && "outline-primary/30 bg-primary text-white ring-1 ring-inset ring-black/10 hover:brightness-95 active:brightness-90 shadow-md",
             variant === "ghost" && "outline-primary/30 bg-primary/5 backdrop-blur-2xl text-primary hover:bg-primary/10 hover:shadow-sm ring-primary/10 ring-0 active:ring-inset active:ring-1 active:ring-primary/10 focus:ring-primary/25 focus:ring-2 transition-all delay-150",
             variant === "danger" && "bg-danger text-white ring-1 ring-inset ring-black/10 hover:brightness-95 active:brightness-90 shadow-md outline-danger/30",

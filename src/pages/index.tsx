@@ -33,7 +33,7 @@ export default function Home() {
           </Button>
 
           <Button variant="ghost" size="lg" wFull hFull asChild>
-            <Link href="/">
+            <Link href="/newproject">
               Adicionar um novo jogo
             </Link>
           </Button>

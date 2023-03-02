@@ -30,9 +30,15 @@ export default function Header() {
 
                 <div className="flex items-center gap-4">
                     <nav className="max-md:hidden">
-                        <Link href="/" className="py-3 px-3 rounded-full font-medium text-sm hover:bg-gray-200 active:brightness-90 transition-all delay-75 ease-in">Início</Link>
-                        <Link href="/newproject" className="py-3 px-3 rounded-full font-medium text-sm hover:bg-gray-200 active:brightness-90 transition-all delay-75 ease-in">Adicionar projeto</Link>
-                        <Link href="/manageprojects" className="py-3 px-3 rounded-full font-medium text-sm hover:bg-gray-200 active:brightness-90 transition-all delay-75 ease-in">Gerenciar projetos</Link>
+                        <Link href="/" className="py-3 px-3 rounded-full font-medium text-sm hover:bg-gray-200 active:brightness-90 transition-all delay-75 ease-in">
+                            Início
+                        </Link>
+                        <Link href="/newproject" className="py-3 px-3 rounded-full font-medium text-sm hover:bg-gray-200 active:brightness-90 transition-all delay-75 ease-in">
+                            Adicionar projeto
+                        </Link>
+                        <Link href="/manageprojects" className="py-3 px-3 rounded-full font-medium text-sm hover:bg-gray-200 active:brightness-90 transition-all delay-75 ease-in">
+                            Gerenciar projetos
+                        </Link>
                     </nav>
 
                     <div className="flex flex-row gap-1">
@@ -73,11 +79,17 @@ export default function Header() {
                     </Button>
                 </header>
                 <nav className="flex flex-col gap-2 px-6 pb-6">
-                    <Link href="/" className="py-3 px-6 rounded-full bg-primary/10 hover:bg-primary/25 hover:ring hover:ring-inset hover:ring-primary/25 active:bg-primary/40 text-lg font-medium transition-all delay-75">Início</Link>
-                    <Link href="/newproject" className="py-3 px-6 rounded-full bg-primary/10 hover:bg-primary/25 hover:ring hover:ring-inset hover:ring-primary/25 active:bg-primary/40 text-lg font-medium transition-all delay-75">Início</Link>
-                    <Link href="/manageprojects" className="py-3 px-6 rounded-full bg-primary/10 hover:bg-primary/25 hover:ring hover:ring-inset hover:ring-primary/25 active:bg-primary/40 text-lg font-medium transition-all delay-75">Início</Link>
+                    <Link href="/" className="py-3 px-6 rounded-full bg-primary/10 hover:bg-primary/25 hover:ring hover:ring-inset hover:ring-primary/25 active:bg-primary/40 text-lg font-medium transition-all delay-75">
+                        Início
+                    </Link>
+                    <Link href="/newproject" className="py-3 px-6 rounded-full bg-primary/10 hover:bg-primary/25 hover:ring hover:ring-inset hover:ring-primary/25 active:bg-primary/40 text-lg font-medium transition-all delay-75">
+                        Adicionar projeto
+                    </Link>
+                    <Link href="/manageprojects" className="py-3 px-6 rounded-full bg-primary/10 hover:bg-primary/25 hover:ring hover:ring-inset hover:ring-primary/25 active:bg-primary/40 text-lg font-medium transition-all delay-75">
+                        Gerenciar projetos
+                    </Link>
                 </nav>
-                <Button className="w-[calc(100%_-_40px)] mx-auto" variant="primary" size="sm" asChild>
+                <Button clearWidth className="w-[calc(100%_-_40px)] mx-auto" variant="primary" size="sm" asChild>
                     <Link href="/">Ir ao site <ArrowSquareOut size={24} weight="bold" /></Link>
                 </Button>
             </Drawer>

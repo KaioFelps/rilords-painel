@@ -31,7 +31,7 @@ export default function Form() {
                 bg-gray-100 border border-gray-400 rounded-3xl
                 flex flex-row
             ">
-                <span className="p-3 border-r border-gray-400 h-auto rounded-l-3xl flex items-center justify-center">
+                <span className="p-3 border-r border-gray-400 h-auto rounded-l-3xl flex items-start justify-center">
                     <BookmarksSimple size={24} stroke="1.5px" />
                 </span>
                 <input
@@ -48,7 +48,7 @@ export default function Form() {
                 bg-gray-100 border border-gray-400 rounded-3xl
                 flex flex-row
             ">
-                <span className="p-3 border-r border-gray-400 h-auto rounded-l-3xl flex items-center justify-center">
+                <span className="p-3 border-r border-gray-400 h-auto rounded-l-3xl flex items-start justify-center">
                     <ImageSquare size={24} stroke="1.5px" />
                 </span>
                 <input
@@ -65,7 +65,7 @@ export default function Form() {
                 bg-gray-100 border border-gray-400 rounded-3xl
                 flex flex-row
             ">
-                <span className="p-3 border-r border-gray-400 h-auto rounded-l-3xl flex items-center justify-center">
+                <span className="p-3 border-r border-gray-400 h-auto rounded-l-3xl flex items-start justify-center">
                     <FileText size={24} stroke="1.5px" />
                 </span>
                 <textarea
