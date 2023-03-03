@@ -1,32 +1,74 @@
 "use client"
 
-import { BookmarksSimple, Check, FileText, ImageSquare, UploadSimple } from "phosphor-react"
-import { FormEvent, useState } from "react"
+import { BookmarksSimple, Check, FileText, ImageSquare, UploadSimple, XCircle } from "phosphor-react"
+import { useEffect, useState } from "react"
 import * as Checkbox from "@radix-ui/react-checkbox"
 import clsx from "clsx"
 import Button from "../ui/Button"
+import { useForm } from "react-hook-form"
+import { SubmitHandler } from "react-hook-form/dist/types"
+import { Message } from "rsuite"
+import { api } from "@/lib/axios"
 
 type labelString = "Fã-sites" | "AeA" | "Projetos" | "Habblet" | "Iron Hotel"
 type checkedLabelsArray = Array<labelString>
 
+type formValuesType = {
+    title: string;
+    imageUrl: string;
+    description: string;
+}
+
 export default function Form() {
     const [ checkedLabels, setCheckedLabels ] = useState<checkedLabelsArray>([])
+    const [ hasNotCheckedAny, setHasNotCheckedAny ] = useState(false)
+    const { register, handleSubmit, formState: {isLoading, isValid, errors} } = useForm<formValuesType>()
+    
+    const handlePostNewProject: SubmitHandler<formValuesType> = (data) => {
+        setHasNotCheckedAny(false)
 
+        if(checkedLabels.length <= 0) {
+            setHasNotCheckedAny(true)
+            return;
+        }
+
+        const dataObject = {
+            ...data,
+            tags: checkedLabels
+        }
+    }
+    
     function handleToggleCheckbox(label: labelString) {
         if (checkedLabels.includes(label)) {
             setCheckedLabels(prevState => prevState.filter(stateLabel => stateLabel !== label))
             return;
         }
 
-        setCheckedLabels(prevState => [...prevState, label])
-    }
-
-    function handleFormSubmit(event: FormEvent) {
-        event.preventDefault()
+        setCheckedLabels(prevState => {
+            const newState = [...prevState, label]
+            return newState
+        })
     }
 
     return (
-        <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit(handlePostNewProject)} className="flex flex-col gap-6">
+            {/* TITLE */}
+
+            {errors.title ?
+                <Message
+                    type="error"
+                    className="text-gray-500 bg-danger/10 rounded-2xl p-4 mb-1">
+                    <header
+                        className="flex flex-row items-center gap-2 mb-2 text-danger"
+                    >
+                        <XCircle size={24} weight="fill" />
+                        <span>Erro no título</span>
+                    </header>
+
+                    <p>O título do projeto é obrigatório e deve ter no máximo 128 letras.</p>
+                </Message>
+            : null}
+
             <label className="
                 bg-gray-100 border border-gray-400 rounded-3xl
                 flex flex-row
@@ -37,12 +79,31 @@ export default function Form() {
                 <input
                     type="text"
                     placeholder="Título"
-                    className="
-                    py-3 bg-transparent w-full rounded-r-3xl outline-none ring-primary/50 px-4 transition-all delay-75
-                    focus:ring-4
-                    "
+                    {...register("title", {
+                        min: 1,
+                        max: 128,
+                        required: true,
+                    })}
+                    className="py-3 bg-transparent w-full rounded-r-3xl outline-none ring-primary/50 px-4 transition-all delay-75 focus:ring-4"
                 />
             </label>
+
+            {/* IMAGE URL */}
+
+            {errors.imageUrl ?
+                <Message
+                    type="error"
+                    className="text-gray-500 bg-danger/10 rounded-2xl p-4 mb-1">
+                    <header
+                        className="flex flex-row items-center gap-2 mb-2 text-danger"
+                    >
+                        <XCircle size={24} weight="fill" />
+                        <span>Erro na imagem</span>
+                    </header>
+
+                    <p>É obrigatório colocar o link direto da imagem / gif do seu jogo. Recomenda-se o imgur.</p>
+                </Message>
+            : null}
 
             <label className="
                 bg-gray-100 border border-gray-400 rounded-3xl
@@ -54,12 +115,32 @@ export default function Form() {
                 <input
                     type="text"
                     placeholder="Link da imagem (imgur)"
+                    {...register("imageUrl", {
+                        required: true
+                    })}
                     className="
                     py-3 bg-transparent w-full rounded-r-3xl outline-none ring-primary/50 px-4 transition-all delay-75
                     focus:ring-4
                     "
                 />
             </label>
+
+            {/* DESCRIPTION */}
+
+            {errors.description ?
+                <Message
+                    type="error"
+                    className="text-gray-500 bg-danger/10 rounded-2xl p-4 mb-1">
+                    <header
+                        className="flex flex-row items-center gap-2 mb-2 text-danger"
+                    >
+                        <XCircle size={24} weight="fill" />
+                        <span>Erro na descrição</span>
+                    </header>
+
+                    <p>Você precisa descrever o seu jogo em entre 5 e 256 palavras.</p>
+                </Message>
+            : null}
 
             <label className="
                 bg-gray-100 border border-gray-400 rounded-3xl
@@ -70,6 +151,11 @@ export default function Form() {
                 </span>
                 <textarea
                     placeholder="Descreva o jogo"
+                    {...register("description", {
+                        required: true,
+                        min: 5,
+                        max: 256
+                    })}
                     rows={4}
                     className="
                     py-3 bg-transparent w-full rounded-r-3xl outline-none ring-primary/50 px-4 transition-all delay-75
@@ -81,6 +167,22 @@ export default function Form() {
 
             <div>
                 <label className="font-medium mb-3 block">Marcadores</label>
+
+                {hasNotCheckedAny ?
+                    <Message
+                        type="error"
+                        className="text-gray-500 bg-danger/10 rounded-2xl p-4 mb-3">
+                        <header
+                            className="flex flex-row items-center gap-2 mb-2 text-danger"
+                        >
+                            <XCircle size={24} weight="fill" />
+                            <span>Erro nas categorias</span>
+                        </header>
+
+                        <p>Você precisa selecionar ao menos uma categoria, cururu</p>
+                    </Message>
+                : null}
+
                 <div className="
                     bg-gray-100 border border-gray-400 rounded-xl p-3
                     flex flex-col gap-2
@@ -97,15 +199,14 @@ export default function Form() {
                         } as {
                             [key: string]: string;
                         }
-
-                        console
                                                  
                         return (
                             <label key={index} className="text-base font-medium text-gray-800 flex flex-row gap-2 items-center">
                                 <Checkbox.Root
-                                    value={label}
-                                    onCheckedChange={() => handleToggleCheckbox(label as labelString)}
                                     title={`Checkbox para ${values[label]}`}
+                                    value={label}
+                                    name="tags"
+                                    onCheckedChange={() => handleToggleCheckbox(label as labelString)}
                                     className={
                                         clsx(`
                                         bg-white w-8 h-8 rounded-lg ring-0 shadow-primary/25 flex items-center justify-center outline-none outline-transparent transition-all delay-75
@@ -127,8 +228,18 @@ export default function Form() {
                 </div>
             </div>
 
-            <Button className="mt-6">
-                <UploadSimple size={24} weight="bold" /> Adicionar
+            <Button
+                type="submit"
+                className="mt-6"
+                disabled={ !isValid || checkedLabels.length <= 0 }
+            >
+                {isLoading ?
+                    <>
+                        <UploadSimple size={24} weight="bold" /> Adicionar
+                    </>
+                :
+                    "Adicionando..."
+                }
             </Button>
         </form>
     )

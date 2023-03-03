@@ -22,7 +22,7 @@ type ButtonPropsType = {
     children: ReactNode
 } & ButtonHTMLAttributes<unknown> & (AsButton | AsSlot)
 
-export default function Button({wFull, hFull, clearWidth = false, children, size = "md", variant = "primary", asChild = false, className, ...rest}: ButtonPropsType) {
+export default function Button({wFull, hFull, clearWidth = false, children, size = "md", variant = "primary", asChild = false, className, disabled = false, ...rest}: ButtonPropsType) {
     const Component = asChild ? Slot : "button"
 
     return (
@@ -38,8 +38,10 @@ export default function Button({wFull, hFull, clearWidth = false, children, size
             size === "xs" && "px-2 py-[6px]",
             size === "sm" && "px-5 py-3",
             size === "md" && "px-8 py-4",
-            size === "lg" && "px-10 py-5"
+            size === "lg" && "px-10 py-5",
+            disabled === true && "saturate-0 opacity-50 cursor-not-allowed"
             )}
+            disabled={disabled}
             {...rest}
         >
             {children}

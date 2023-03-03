@@ -20,6 +20,17 @@ export const robotoMono = Roboto_Mono({
 })
 
 export default function App({ Component, pageProps }: AppProps ) {
+    const toastTypesBackgroundClasses = {
+        success: "bg-green-600",
+        error: "bg-danger",
+        info: "bg-primary",
+        warning: "bg-yellow-500",
+        default: "bg-gray-300",
+        dark: "bg-gray-800",
+    } as {
+        [key: string]: string
+    }
+
     return (
         <>
             <Head>
