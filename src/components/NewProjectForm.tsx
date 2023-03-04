@@ -1,7 +1,7 @@
 "use client"
 
-import { BookmarksSimple, Check, FileText, ImageSquare, UploadSimple, XCircle } from "phosphor-react"
-import { useEffect, useState } from "react"
+import { BookmarksSimple, Check, FileText, ImageSquare, Key, UploadSimple, XCircle } from "phosphor-react"
+import { ChangeEvent, useRef, useState } from "react"
 import * as Checkbox from "@radix-ui/react-checkbox"
 import clsx from "clsx"
 import Button from "../ui/Button"
@@ -9,6 +9,12 @@ import { useForm } from "react-hook-form"
 import { SubmitHandler } from "react-hook-form/dist/types"
 import { Message } from "rsuite"
 import { api } from "@/lib/axios"
+import Dialog, { CloseButton } from "@/ui/Dialog"
+import Image from "next/image"
+import Box from "@/ui/Box"
+
+import TullaDedoNaCara from "../assets/tulla-dedo-na-cara.png"
+import TullaMaoNoQueixo from "../assets/tulla-mao-no-queixo.png"
 
 type labelString = "Fã-sites" | "AeA" | "Projetos" | "Habblet" | "Iron Hotel"
 type checkedLabelsArray = Array<labelString>
@@ -22,9 +28,36 @@ type formValuesType = {
 export default function Form() {
     const [ checkedLabels, setCheckedLabels ] = useState<checkedLabelsArray>([])
     const [ hasNotCheckedAny, setHasNotCheckedAny ] = useState(false)
-    const { register, handleSubmit, formState: {isLoading, isValid, errors} } = useForm<formValuesType>()
+    const { register, handleSubmit, formState: {isValid, errors}, reset } = useForm<formValuesType>()
+    const [ formStep, setFormStep ] = useState(0)
+    const [ newProjectData, setNewProjectData ] = useState({})
+    const [ dialogPassword, setDialogPassword ] = useState("")
+
+    const passwordInputRef = useRef<HTMLInputElement>(null)
     
-    const handlePostNewProject: SubmitHandler<formValuesType> = (data) => {
+    async function handlePostNewProject() {
+        try {
+            const response = await api.post("/newproject", newProjectData, {
+                headers: {
+                    token: passwordInputRef.current!.value
+                }
+            })
+
+            setFormStep(2)
+            setCheckedLabels([])
+            passwordInputRef.current!.value=""
+            reset()
+        }
+        
+        catch {
+            setFormStep(0)
+            setDialogPassword("")
+            setCheckedLabels([])
+            console.log("Algo deu errado")
+        }
+    }
+
+    const handleOpenSecondStepModal: SubmitHandler<formValuesType> = (data) => {
         setHasNotCheckedAny(false)
 
         if(checkedLabels.length <= 0) {
@@ -32,10 +65,12 @@ export default function Form() {
             return;
         }
 
-        const dataObject = {
+        setNewProjectData({
             ...data,
             tags: checkedLabels
-        }
+        })
+
+        setFormStep(1)
     }
     
     function handleToggleCheckbox(label: labelString) {
@@ -50,8 +85,74 @@ export default function Form() {
         })
     }
 
+    function handleTypePassword(event: ChangeEvent<HTMLInputElement>) {
+        const input = event.target
+
+        setDialogPassword(input.value)
+    }
+
+    const firstStepContent = (
+        <div className="relative">
+            <Image className="absolute left-0 top-0 -translate-x-[30%] min-w-[533px] h-[300px] rounded-3xl shadow-primary/25 shadow-2xl" src={TullaDedoNaCara} alt="Tulla Luana apontando o dedo para o usuário com cara de raiva" width={533} height={300} />
+            <Box size="md" className="relative -translate-y-14  translate-x-[28%] w-screen max-w-[600px]">
+                <h2 className="text-2xl font-bold mb-2">Calma aí!</h2>
+                <p className="mb-6">Antes de tudo, prove... Prove que você é o culords.</p>
+
+                <label className="
+                    bg-gray-100 border border-gray-400 rounded-3xl
+                    flex flex-row
+                ">
+                    <span className="p-3 border-r border-gray-400 h-auto rounded-l-3xl flex items-start justify-center">
+                        <Key size={24} stroke="1.5px" />
+                    </span>
+                    <input
+                        type="text"
+                        placeholder="Senha"
+                        name="password"
+                        ref={passwordInputRef}
+                        className="py-3 bg-transparent w-full rounded-r-3xl outline-none ring-primary/50 px-4 transition-all delay-75 focus:ring-4"
+                    />
+                </label>
+            
+                <div className="flex flex-row gap-4 items-center justify-end mt-6">
+                    <CloseButton asChild>
+                        <Button type="button" variant="ghost" onClick={() => setFormStep(0)}>Cancelar</Button>
+                    </CloseButton>
+
+                    <Button
+                        type="button" 
+                        variant="primary"
+                        onClick={handlePostNewProject}
+                    >
+                        <UploadSimple size={24} /> Confirmar e lacrar
+                    </Button>
+                </div>
+            </Box>
+        </div>
+    )
+
+    const secondStepContent = (
+        <div className="relative">
+            <Image
+                className="absolute left-0 top-[50%] -translate-y-1/2 -translate-x-[30%] min-w-[465px] h-[361px] rounded-3xl shadow-primary/25 shadow-2xl"
+                src={TullaMaoNoQueixo}
+                alt="Tulla Luana apontando o dedo para o usuário com cara de raiva"
+                width={465}
+                height={361}
+            />
+            <Box size="md" className="relative translate-x-[48%] w-screen max-w-[374px]">
+                <h2 className="text-2xl font-bold mb-2">Lacrou bom bom</h2>
+                <p className="mb-6">Jogo adicionado com sucesso, beijos da web diva tulla floriana 💋💋</p>
+            
+                <div className="flex flex-row gap-4 items-center justify-end mt-6">
+                    <Button type="button" variant="ghost" onClick={() => setFormStep(0)}>Fechar</Button>
+                </div>
+            </Box>
+        </div>
+    )
+
     return (
-        <form onSubmit={handleSubmit(handlePostNewProject)} className="flex flex-col gap-6">
+        <form onSubmit={handleSubmit(handleOpenSecondStepModal)} className="flex flex-col gap-6">
             {/* TITLE */}
 
             {errors.title ?
@@ -228,19 +329,18 @@ export default function Form() {
                 </div>
             </div>
 
-            <Button
-                type="submit"
-                className="mt-6"
-                disabled={ !isValid || checkedLabels.length <= 0 }
+            <Dialog
+                open={formStep === 0 ? false : true}
+                content={formStep === 1 ? firstStepContent : formStep === 2 ? secondStepContent : null}
             >
-                {isLoading ?
-                    <>
-                        <UploadSimple size={24} weight="bold" /> Adicionar
-                    </>
-                :
-                    "Adicionando..."
-                }
-            </Button>
+                <Button
+                    type="submit"
+                    className="mt-6"
+                    disabled={ !isValid || checkedLabels.length <= 0 }
+                >
+                    <UploadSimple size={24} weight="bold" /> Adicionar
+                </Button>
+            </Dialog>
         </form>
     )
 }

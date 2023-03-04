@@ -7,10 +7,11 @@ import { Slot } from "@radix-ui/react-slot"
 type BoxPropsType = {
     children: ReactNode
     size: "sm" | "md" | "lg"
-    asChild: boolean;
+    asChild?: boolean;
+    className?: string;
 }
 
-export default function Box({children, size, asChild = false}: BoxPropsType) {
+export default function Box({children, size, asChild = false, className}: BoxPropsType) {
     const Component = asChild ? Slot : "div"
 
     return (
@@ -19,7 +20,8 @@ export default function Box({children, size, asChild = false}: BoxPropsType) {
                 "rounded-3xl bg-white shadow-primary/25 shadow-lg",
                 size === "lg" && "p-12",
                 size === "md" && "p-8",
-                size === "sm" && "p-6"
+                size === "sm" && "p-6",
+                !!className && ` ${className}`
             )}
         >
             {children}
